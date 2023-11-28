@@ -1,30 +1,42 @@
 <template>
   <h2>{{ name }}</h2>
   <h2>{{ age }}</h2>
-  <button @click="sayHello">点击弹窗</button>
+  <button @click="ChangeInfo">修改人的信息</button>
+  <button @click="ChangAge">修改人的年龄</button>
+  <h3>工作种类:{{ job.type }}</h3>
+  <h3>工资薪水:{{ job.salary }}</h3>
 </template>
 
 <script>
-import {h} from 'vue'
+import { ref } from 'vue';
 export default {
   name: "test",
   setup() {
     //数据
-    let name = "张三";
-    let age = 19;
-    function sayHello() {
-      alert(`我叫${name},我${age}岁了,你好啊!`);
-    }
-    //需要把结果返回出去(返回的是一个对象)
-    // return {
-    //   name,
-    //   age,
-    //   sayHello,
-    // };
+    let name = ref("张三");
+    let age = ref(19);
+    let job = ref({
+        type:"工程师",
+        salary:"30k"
+    })
 
-    //渲染函数(了解)
-    return ()=>{return h('h1','测试')}  //完整写法(有两个return)
-    // return ()=>(h('h1','测试'))  //精简写法,效果是一样的
+    function ChangeInfo(){
+        job.value.type = '设计师',
+        job.value.salary = '35k'
+    }
+    function ChangAge() {
+      age.value = 20
+    }
+    // 需要把结果返回出去(返回的是一个对象)
+    return {
+      name,
+      age,
+      job,
+      ChangAge,
+      ChangeInfo,
+      
+    };
+
   },
 };
 </script>
