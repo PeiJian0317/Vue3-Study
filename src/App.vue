@@ -1,5 +1,5 @@
 <template>
-  <test></test>
+  <test msg="Hello" info="World" @hello="showDialog"/>
 </template>
 
 <script>
@@ -9,6 +9,15 @@ export default {
   name: 'App',
   components: {
     test
+  },
+  setup(){
+    function showDialog(data){
+      alert(`成功触发,接收到了${data}!!!`)
+    }
+    
+    return{
+      showDialog
+    }
   }
 }
 </script>
