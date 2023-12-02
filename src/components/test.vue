@@ -1,17 +1,31 @@
 <template>
-  <h2>当前点击时鼠标的坐标为:x: {{ point.x }},y: {{ point.y }}</h2>
+  <h2>name:{{ name }}</h2>
+  <h2>age:{{ age }}</h2>
+  <h2>sex:{{ sex }}</h2>
+  <h2>salary:{{ job.s1.salary }}</h2>
+
 </template>
 
 <script>
-import usePoint from "../hooks/usePoint";
+import { reactive,toRefs } from 'vue';
 export default {
   name: "test",
   setup() {
-    const {point} = usePoint();
+    let person = reactive({
+      name:'zs',
+      age:19,
+      sex:'b',
+      job:{
+        s1:{
+          salary:8000
+        }
+      }
+      
+    })
 
     // 需要把结果返回出去(返回的是一个对象)
     return {
-      point
+      ...toRefs(person)
     };
 
   },
