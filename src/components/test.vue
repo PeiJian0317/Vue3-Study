@@ -1,45 +1,38 @@
 <template>
-  <h2>{{ person }}</h2>
-  <h2>{{ test }}</h2>
-  <hr>
-  <h2>name:{{ name }}</h2>
-  <h2>age:{{ age }}</h2>
-  <h2>sex:{{ sex }}</h2>
-  <h2>salary:{{ job.s1.salary }}</h2>
-  <button @click="job.s1.salary++">click => salary++</button>
-  <hr>
-  <h2>address:{{ test.address }}</h2>
-  <button @click="test.address += '~'">address => salary+~</button>
+	<input type="text" v-model="keyword">
+	<h3>{{keyword}}</h3>
 </template>
 
 <script>
-import { reactive,shallowReactive,shallowRef,toRefs } from 'vue';
-export default {
-  name: "test",
-  setup() {
-    let person = shallowReactive({
-      name:'zs',
-      age:19,
-      sex:'b',
-      job:{
-        s1:{
-          salary:8000
-        }
-      }
-    })
-    let test = shallowRef({
-      address:'shanghai'
-    })
-
-    // 需要把结果返回出去(返回的是一个对象)
-    return {
-      person,
-      test,
-      ...toRefs(person)
-    };
-
-  },
-};
+	import {ref,customRef} from 'vue'
+	export default {
+		name:'Demo',
+		setup(){
+			// let keyword = ref('hello') //使用Vue准备好的内置ref
+			//自定义一个myRef
+			function myRef(value,delay){
+				let timer
+				//通过customRef去实现自定义
+				return customRef((track,trigger)=>{
+					return{
+						get(){
+							track() //告诉Vue这个value值是需要被“追踪”的
+							return value
+						},
+						set(newValue){
+							clearTimeout(timer)
+							timer = setTimeout(()=>{
+								value = newValue
+								trigger() //告诉Vue去更新界面
+							},delay)
+						}
+					}
+				})
+			}
+			let keyword = myRef('hello',500) //使用程序员自定义的ref
+			return {
+				keyword
+			}
+		}
+	}
 </script>
-
-<style></style>
